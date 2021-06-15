@@ -1,0 +1,2 @@
+# InviteCord
+Permanent invite system
