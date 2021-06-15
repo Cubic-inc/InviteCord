@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script>
+            
+            async function GetData(url = '') {
+                // Default options are marked with *
+                const response = await fetch(url, {
+                    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+                    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow', // manual, *follow, error
+                });
+                return response.json(); // parses JSON response into native JavaScript objects
+            }
+
+            window.onload=()=>{
+
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                const params = Object.fromEntries(urlSearchParams.entries());
+
+                if (!params.id) {
+                    window.location.href = "../index.html"
+                }
+
+                let Id = params.id
+
+                const RequestLink = `https://discord.com/api/guilds/${Id}/widget.json` 
+                console.info("Requesting from " + RequestLink + "\n")
+
+                GetData(RequestLink)
+                .then(data => {
+                        console.log(data); // JSON data parsed by `data.json()` call
+
+                        if (data.id) {
+                            document.getElementById("servername").innerHTML = "Sending you to: \n" + data.name
+
+                            const InviteCode = data.instant_invite.split("/")[4]
+                            console.log(InviteCode)
+
+
+                            const InviteRequest = "https://discord.com/api/v8/invites/" + InviteCode
+                            console.log(InviteRequest)
+
+                            GetData(InviteRequest)
+                            .then(InviteInfo => {
+                                console.log(InviteInfo)
+                                document.getElementById("image").src = "https://cdn.discordapp.com/icons/" + InviteInfo.guild.id + "/" + InviteInfo.guild.icon + ".png"
+                            })
+
+                        } else {
+                            document.getElementById("homelink").innerHTML = "Home"
+                            document.getElementById("servername").innerHTML = "An error occured"
+                            document.getElementById("image").src = "../assets/Images/crab.gif"
+
+                            if (data.message) {
+                                document.getElementById("message").innerHTML = data.message
+                            } else {
+                                document.getElementById("message").innerHTML = data.guild_id
+                            }
+                            
+                        }
+
+                        
+
+                        
+                    }
+                );
+
+            };
+
+            
+        </script>
+
+        <style>
+            body {
+                background-color: #2c2f33;
+            }
+
+            .container {
+                height: 100%;
+            }
+
+            .center {
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+
+                width: 25%;
+                height: 25%;
+
+                font-family: Arial, Helvetica, sans-serif;
+                color: white;
+                text-align: center;
+            }
+
+            .link {
+                color: white;
+                text-decoration: none;
+            }
+        </style>
+
+        <title>Working</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="center">
+                <h1 id="servername" >Loading...</h1>
+                <br>
+                <img id="image" src="../assets/Images/loading.gif" alt="Loading">
+                <p id="message"></p>
+
+                <br>
+                <h1 class="link" id="homelink" href="../index.html" style="color:white;"></h1>
+            </div>
+
+        </div>
+        <p style="color: white; left: 5px; bottom: 5px; font-family: Arial, Helvetica, sans-serif;">InviteCord.ga made by Corebytes and Cubic Inc with <3</p>
+    </body>
+</html>
