@@ -6,18 +6,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        </script>
+        
+        <script>
             
             async function GetData(url = '') {
                 // Default options are marked with *
                 const response = await fetch(url, {
                     method: 'GET', // *GET, POST, PUT, DELETE, etc.
+                    mode: 'cors',
                     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        //'Access-Control-Allow-Origin': '*'
                     },
                     redirect: 'follow', // manual, *follow, error
                 });
-                return response.json(); // parses JSON response into native JavaScript objects
+                console.log(response)
+                const ToReturn = response.json()
+                console.log(ToReturn)
+                return ToReturn; // parses JSON response into native JavaScript objects
             }
 
             window.onload=()=>{
@@ -52,6 +63,9 @@
                             .then(InviteInfo => {
                                 console.log(InviteInfo)
                                 document.getElementById("image").src = "https://cdn.discordapp.com/icons/" + InviteInfo.guild.id + "/" + InviteInfo.guild.icon + ".png"
+
+                                sleep(5000)
+                                window.location.href = data.instant_invite
                             })
 
                         } else {
@@ -107,6 +121,7 @@
                 color: white;
                 text-decoration: none;
             }
+            
         </style>
 
         <title>Working</title>

@@ -4,18 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <title>InviteCord - Permanent discord invites!</title>
-
-        <script>
-            const urlSearchParams = new URLSearchParams(window.location.search);
-            const params = Object.fromEntries(urlSearchParams.entries());
-
-            if (params.id) {
-                window.location.href = "./invite?id=" + params.id
-            }
-            
-        </script>
+        <title>Done</title>
 
         <style>
             body {
@@ -47,19 +36,24 @@
                 text-decoration: none;
             }
         </style>
+
+        <script>
+            window.onload=()=>{
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                const params = Object.fromEntries(urlSearchParams.entries());
+                document.getElementById("link").innerText = "invitecord.ga/?id=" + params.id
+            }
+        </script>
+
     </head>
 
     <body>
         <div class="container">
             <div class="center">
-                <h1 id="servername">Create your own invite link</h1>
+                <h1 id="servername">Copy this link and send it to your friends</h1>
                 <br>
                 
-                <form action="./create/index.html" method="get">
-                    <input type="number" name="id" id="ID" value="657227821047087105">
-                    <br>
-                    <button type="submit">Create</button>
-                </form>
+                <a style="color: white; text-decoration: none;" href="" id="link"></a>
             </div>
 
         </div>
