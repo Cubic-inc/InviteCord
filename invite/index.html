@@ -6,91 +6,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
-            function sleep(ms) {
+            function Sleep(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
+
+            Wait = Sleep
         </script>
+
+        <script src="/Request.js"></script>
         
-        <script>
-            
-            async function GetData(url = '') {
-                // Default options are marked with *
-                const response = await fetch(url, {
-                    method: 'GET', // *GET, POST, PUT, DELETE, etc.
-                    mode: 'cors',
-                    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                    headers: {
-                        'Content-Type': 'application/json',
-                        //'Access-Control-Allow-Origin': '*'
-                    },
-                    redirect: 'follow', // manual, *follow, error
-                });
-                console.log(response)
-                const ToReturn = response.json()
-                console.log(ToReturn)
-                return ToReturn; // parses JSON response into native JavaScript objects
-            }
-
-            window.onload=()=>{
-
-                const urlSearchParams = new URLSearchParams(window.location.search);
-                const params = Object.fromEntries(urlSearchParams.entries());
-
-                if (!params.id) {
-                    window.location.href = "../index.html"
-                }
-
-                let Id = params.id
-
-                const RequestLink = `https://discord.com/api/guilds/${Id}/widget.json` 
-                console.info("Requesting from " + RequestLink + "\n")
-
-                GetData(RequestLink)
-                .then(data => {
-                        console.log(data); // JSON data parsed by `data.json()` call
-
-                        if (data.id) {
-                            document.getElementById("servername").innerHTML = "Sending you to: \n" + data.name
-
-                            const InviteCode = data.instant_invite.split("/")[4]
-                            console.log(InviteCode)
-
-
-                            const InviteRequest = "https://discord.com/api/v8/invites/" + InviteCode
-                            console.log(InviteRequest)
-
-                            GetData(InviteRequest)
-                            .then(InviteInfo => {
-                                console.log(InviteInfo)
-                                document.getElementById("image").src = "https://cdn.discordapp.com/icons/" + InviteInfo.guild.id + "/" + InviteInfo.guild.icon + ".png"
-
-                                sleep(5000)
-                                window.location.href = data.instant_invite
-                            })
-
-                        } else {
-                            document.getElementById("homelink").innerHTML = "Home"
-                            document.getElementById("servername").innerHTML = "An error occured"
-                            document.getElementById("image").src = "../assets/Images/crab.gif"
-
-                            if (data.message) {
-                                document.getElementById("message").innerHTML = data.message
-                            } else {
-                                document.getElementById("message").innerHTML = data.guild_id
-                            }
-                            
-                        }
-
-                        
-
-                        
-                    }
-                );
-
-            };
-
-            
-        </script>
+        <script src="index.js" type="module"></script>
 
         <style>
             body {

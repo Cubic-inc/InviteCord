@@ -38,10 +38,45 @@
         </style>
 
         <script>
+            function Copy(Element) {
+                var copyText = document.getElementById(Element);
+                //copyText.select();
+                copyText.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                
+                alert("Copied to clipboard!")
+            }
+
+            
+            function DoFor(El) {
+                El.onclick = function() {
+                    document.execCommand("copy");
+                }
+
+                El.addEventListener("copy", function(event) {
+                    event.preventDefault();
+                    if (event.clipboardData) {
+                        event.clipboardData.setData("text/plain", El.textContent);
+                        console.log(event.clipboardData.getData("text"))
+
+                        alert("Copied to clipboard")
+                    }
+                });
+            }
+            
+
             window.onload=()=>{
+                var Link = document.getElementById("link")
+                var Short = document.getElementById("shortlink")
+
                 const urlSearchParams = new URLSearchParams(window.location.search);
                 const params = Object.fromEntries(urlSearchParams.entries());
-                document.getElementById("link").innerText = "invitecord.ga/?id=" + params.id
+
+                Link.innerText = "invitecord.ga/?id=" + params.id
+                Short.innerText = "icrd.ga/?id=" + params.id
+
+                DoFor(Link)
+                DoFor(Short)
             }
         </script>
 
@@ -53,7 +88,13 @@
                 <h1 id="servername">Copy this link and send it to your friends</h1>
                 <br>
                 
-                <a style="color: white; text-decoration: none;" href="" id="link"></a>
+                <span style="color: white; text-decoration: none;" id="link"></span>
+                <span style="color: white; text-decoration: none;" id="shortlink"></span>
+
+                <br>
+                <br>
+                <p>(Click to copy)</p>
+
             </div>
 
         </div>

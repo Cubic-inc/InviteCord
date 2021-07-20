@@ -12,10 +12,12 @@
             const params = Object.fromEntries(urlSearchParams.entries());
 
             if (params.id) {
-                window.location.href = "./invite?id=" + params.id
+                document.location = "/invite?id=" + params.id
             }
             
         </script>
+
+        <script src="/Request.js"></script>
 
         <style>
             body {
@@ -56,10 +58,13 @@
                 <br>
                 
                 <form action="./create/index.html" method="get">
+                    <label for="id">Your server id</label><br>
                     <input type="number" name="id" id="ID" value="657227821047087105">
                     <br>
                     <button type="submit">Create</button>
                 </form>
+                <br>
+                <p>Make shure you have widgeds enabled and test the link before you send it!</p>
             </div>
 
         </div>
