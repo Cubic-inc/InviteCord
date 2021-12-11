@@ -30,7 +30,7 @@ window.onload = async () => {
 
         document.getElementById("image").src = "https://cdn.discordapp.com/icons/" + InviteData.guild.id + "/" + InviteData.guild.icon + ".png"
 
-        await Wait(2000)
+        await Wait(500)
         window.location = WidgedData.instant_invite
 
         console.log(WidgedData)
